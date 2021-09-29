@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/list_fragment">
+
+    <fragment
+        android:id="@+id/list_fragment"
+        android:name="com.geoffduong.gamesearch.ui.main.GameListFragment"
+        android:label="@string/list_fragment_name">
+
+        <action
+            android:id="@+id/action_list_fragment_to_detail_fragment"
+            app:destination="@id/detail_fragment">
+
+            <argument
+                android:name="gameIcon"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="gameDescription"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_fragment"
+        android:name="com.geoffduong.gamesearch.ui.main.GameDetailFragment"
+        android:label="@string/detail_fragment_name">
+
+        <argument
+            android:name="gameIcon"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="gameDescription"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
+</navigation>
