@@ -3,4 +3,5 @@
     <string name="list_fragment_name">Game List</string>
     <string name="detail_fragment_name">Game Detail</string>
     <string name="game_icon">Game Icon</string>
+    <string name="search_view_query_hint">Search games</string>
 </resources>
