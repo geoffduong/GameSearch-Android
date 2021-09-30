@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.paging.PagingData
@@ -16,6 +18,8 @@ import com.geoffduong.gamesearch.data.Game
 import com.geoffduong.gamesearch.databinding.ListFragmentBinding
 import com.geoffduong.gamesearch.ui.recyclerview.GameListAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
@@ -25,7 +29,9 @@ import java.io.File
 class GameListFragment : Fragment() {
 
     private lateinit var binding: ListFragmentBinding
+    private lateinit var viewModel: GameViewModel
     private val iconFileName = "icon_%s"
+    private var queryTextChangedJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +44,19 @@ class GameListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(GameViewModel::class.java)
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                performSearch(query)
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                performSearch(query)
+                return true
+            }
+        })
 
         val pagingAdapter = GameListAdapter(object : GameListItemOnClickListener {
             override fun onClick(view: View, game: Game?) {
@@ -74,5 +92,14 @@ class GameListFragment : Fragment() {
                     }
             }
         })
+    }
+
+    private fun performSearch(query: String?) {
+        queryTextChangedJob?.cancel()
+
+        queryTextChangedJob = lifecycle.coroutineScope.launch {
+            delay(400)
+            viewModel.updateQuery(query)
+        }
     }
 }
