@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.geoffduong.gamesearch.R
 import com.geoffduong.gamesearch.data.Game
 import com.geoffduong.gamesearch.databinding.GameListItemBinding
 import com.geoffduong.gamesearch.ui.main.GameListItemOnClickListener
@@ -15,7 +14,7 @@ class GameListAdapter(val itemOnClickListener: GameListItemOnClickListener) :
     inner class GameListViewHolder(val binding: GameListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(game: Game?) {
-            binding.gameIcon.setImageResource(R.drawable.ic_launcher_background)
+            binding.gameIcon.setImageBitmap(game?.image?.icon_bitmap)
             binding.gameName.text = game?.name
             binding.root.setOnClickListener { view -> itemOnClickListener.onClick(view, game) }
         }

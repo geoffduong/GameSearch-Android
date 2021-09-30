@@ -6,22 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.geoffduong.gamesearch.api.GiantBombService
 import com.geoffduong.gamesearch.data.Game
 import com.geoffduong.gamesearch.databinding.ListFragmentBinding
 import com.geoffduong.gamesearch.ui.recyclerview.GameListAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
+@AndroidEntryPoint
 class GameListFragment : Fragment() {
 
     private lateinit var binding: ListFragmentBinding
@@ -37,19 +33,7 @@ class GameListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val service = Retrofit.Builder().baseUrl("https://www.giantbomb.com")
-            .addConverterFactory(
-                MoshiConverterFactory.create(
-                    Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-                )
-            )
-            .build().create(GiantBombService::class.java)
-
-        val viewModel by viewModels<GameViewModel>(factoryProducer = {
-            GameViewModelProviderFactory(
-                service
-            )
-        })
+        val viewModel by viewModels<GameViewModel>()
 
         val pagingAdapter = GameListAdapter(object : GameListItemOnClickListener {
             override fun onClick(view: View, game: Game?) {
@@ -63,20 +47,14 @@ class GameListFragment : Fragment() {
         val recyclerView = binding.listFragmentRecyclerView
         recyclerView.adapter = pagingAdapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
+        )
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.flow.collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
-        }
-    }
-
-    class GameViewModelProviderFactory(val service: GiantBombService) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass == GameViewModel::class.java) {
-                return GameViewModel(service) as T
-            }
-            return null as T
         }
     }
 }
