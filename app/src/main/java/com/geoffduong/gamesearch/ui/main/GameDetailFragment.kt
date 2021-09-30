@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class GameDetailFragment : Fragment() {
             } else {
                 binding.detailFragmentGameDescription.text = Html.fromHtml(description)
             }
+            binding.detailFragmentGameDescription.movementMethod = ScrollingMovementMethod()
         }
 
         args.gameIcon?.let { fileName ->
