@@ -35,7 +35,7 @@ class GameViewModel() : ViewModel() {
             val trimmedQuery = query.trim()
             if (trimmedQuery.isEmpty()) {
                 flow = emptyFlow()
-            } else {
+            } else if (!trimmedQuery.equals(_query.value)) {
                 flow = Pager(PagingConfig(20)) {
                     GamePagingSource(service, "name:" + trimmedQuery)
                 }.flow.cachedIn(viewModelScope)

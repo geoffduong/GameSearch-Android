@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -77,6 +79,13 @@ class GameListFragment : Fragment() {
                 view.findNavController().navigate(action)
             }
         })
+        pagingAdapter.addLoadStateListener { loadStates ->
+            binding.listFragmentProgressBar.isVisible =
+                loadStates.refresh is LoadState.Loading
+            binding.listFragmentRecyclerView.isVisible =
+                loadStates.refresh is LoadState.NotLoading
+        }
+
         val recyclerView = binding.listFragmentRecyclerView
         recyclerView.adapter = pagingAdapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)

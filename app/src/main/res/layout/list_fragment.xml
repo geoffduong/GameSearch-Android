@@ -17,6 +17,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="@string/search_view_query_hint" />
 
+    <ProgressBar
+        android:id="@+id/list_fragment_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_view"
+        tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_fragment_recycler_view"
         android:layout_width="match_parent"
