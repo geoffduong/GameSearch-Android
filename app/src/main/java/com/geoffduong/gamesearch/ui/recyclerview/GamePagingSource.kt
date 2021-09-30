@@ -1,6 +1,5 @@
 package com.geoffduong.gamesearch.ui.recyclerview
 
-import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -35,11 +34,7 @@ class GamePagingSource(val service: GiantBombService, val filter: String) :
                         "https://www.giantbomb.com/a/uploads/"
                     )
                 )
-                val bitmap =
-                    BitmapFactory.decodeStream(
-                        response.body()?.byteStream()
-                    )
-                game.image?.icon_bitmap = bitmap
+                game.image?.iconByteArray = response.body()?.byteStream()?.readBytes()
                 game
             }
 

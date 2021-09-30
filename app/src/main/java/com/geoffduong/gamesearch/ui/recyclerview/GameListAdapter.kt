@@ -1,5 +1,6 @@
 package com.geoffduong.gamesearch.ui.recyclerview
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -14,8 +15,14 @@ class GameListAdapter(val itemOnClickListener: GameListItemOnClickListener) :
     inner class GameListViewHolder(val binding: GameListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(game: Game?) {
-            binding.gameIcon.setImageBitmap(game?.image?.icon_bitmap)
-            binding.gameName.text = game?.name
+            val bitmap =
+                BitmapFactory.decodeByteArray(
+                    game?.image?.iconByteArray,
+                    0,
+                    game?.image?.iconByteArray!!.size
+                )
+            binding.gameIcon.setImageBitmap(bitmap)
+            binding.gameName.text = game.name
             binding.root.setOnClickListener { view -> itemOnClickListener.onClick(view, game) }
         }
     }

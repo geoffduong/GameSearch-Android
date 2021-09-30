@@ -1,5 +1,6 @@
 package com.geoffduong.gamesearch.ui.main
 
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -7,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.geoffduong.gamesearch.R
 import com.geoffduong.gamesearch.databinding.DetailFragmentBinding
+import java.io.File
 
 class GameDetailFragment : Fragment() {
     private lateinit var binding: DetailFragmentBinding
@@ -35,7 +36,11 @@ class GameDetailFragment : Fragment() {
             }
         }
 
-        // TODO: Use game icon here
-        binding.detailFragmentGameIcon.setImageResource(R.drawable.ic_launcher_background)
+        args.gameIcon?.let { fileName ->
+            val file = File(view.context.filesDir, fileName)
+            val bitmap =
+                BitmapFactory.decodeStream(file.inputStream())
+            binding.detailFragmentGameIcon.setImageBitmap(bitmap)
+        }
     }
 }
