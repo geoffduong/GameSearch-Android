@@ -28,16 +28,6 @@ class GamePagingSource(val service: GiantBombService, val filter: String) :
                 nextKey = null
             }
 
-            response.results!!.map { game ->
-                val response = service.getImage(
-                    game.image!!.icon_url!!.removePrefix(
-                        "https://www.giantbomb.com/a/uploads/"
-                    )
-                )
-                game.image?.iconByteArray = response.body()?.byteStream()?.readBytes()
-                game
-            }
-
             return LoadResult.Page(
                 response.results!!,
                 prevKey = null,

@@ -1,6 +1,3 @@
 package com.geoffduong.gamesearch.data
 
-data class Image(var icon_url: String?) {
-    @Transient
-    var iconByteArray: ByteArray? = null
-}
+data class Image(var icon_url: String?)

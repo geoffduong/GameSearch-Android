@@ -1,6 +1,5 @@
 package com.geoffduong.gamesearch.ui.main
 
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -10,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.geoffduong.gamesearch.databinding.DetailFragmentBinding
-import java.io.File
+import com.squareup.picasso.Picasso
 
 class GameDetailFragment : Fragment() {
     private lateinit var binding: DetailFragmentBinding
@@ -39,10 +38,7 @@ class GameDetailFragment : Fragment() {
         }
 
         args.gameIcon?.let { fileName ->
-            val file = File(view.context.filesDir, fileName)
-            val bitmap =
-                BitmapFactory.decodeStream(file.inputStream())
-            binding.detailFragmentGameIcon.setImageBitmap(bitmap)
+            Picasso.get().load(fileName).into(binding.detailFragmentGameIcon)
         }
     }
 }
